@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -28,11 +29,63 @@ public class User {
 	@Column(name = "emp_id")
 	private int empId;
 
-	@Column(name = "project_id")
-	private int projectId;
+	@ManyToOne
+	@JoinColumn(name = "project_id")
+	private Project project;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "task_id")
 	private Task task;
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+
+	public Project getProject() {
+		return this.project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+	
+	
 
 }
