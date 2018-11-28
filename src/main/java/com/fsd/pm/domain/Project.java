@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,6 +38,10 @@ public class Project {
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Task> tasks = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User manager;
 
 	public int getProjectId() {
 		return projectId;
@@ -83,6 +89,14 @@ public class Project {
 
 	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	public User getManager() {
+		return manager;
+	}
+
+	public void setManager(User managerId) {
+		this.manager = managerId;
 	}
 
 }
