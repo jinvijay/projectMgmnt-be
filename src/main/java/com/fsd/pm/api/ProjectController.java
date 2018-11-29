@@ -17,28 +17,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fsd.pm.domain.Project;
 import com.fsd.pm.service.ProjectService;
+import com.fsd.pm.service.dto.ProjectDto;
 
 @RestController
-@RequestMapping(value={"/project"})
+@RequestMapping(value = { "/project" })
 public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Project> getProjectById(@PathVariable("id") int id) {
+	public ResponseEntity<ProjectDto> getProjectById(@PathVariable("id") int id) {
 		System.out.println("Fetching Project with id " + id);
-		Project project = projectService.findById(id);
+		ProjectDto project = projectService.findById(id);
 		if (project == null) {
-			return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ProjectDto>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+		return new ResponseEntity<ProjectDto>(project, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/create", headers = "Accept=application/json")
-	public ResponseEntity<Void> createProject(@RequestBody Project project, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<Void> createProject(@RequestBody ProjectDto project, UriComponentsBuilder ucBuilder) {
 		System.out.println("Creating Project " + project.getProject());
 		projectService.createProject(project);
 		HttpHeaders headers = new HttpHeaders();
@@ -47,16 +47,16 @@ public class ProjectController {
 	}
 
 	@GetMapping(value = "/get", headers = "Accept=application/json")
-	public List<Project> getAllProject() {
-		List<Project> projects = projectService.getProjects();
+	public List<ProjectDto> getAllProject() {
+		List<ProjectDto> projects = projectService.getProjects();
 		return projects;
 
 	}
 
 	@PutMapping(value = "/update", headers = "Accept=application/json")
-	public ResponseEntity<String> updateProject(@RequestBody Project currentProject) {
+	public ResponseEntity<String> updateProject(@RequestBody ProjectDto currentProject) {
 		System.out.println("sd");
-		Project project = projectService.findById(currentProject.getProjectId());
+		ProjectDto project = projectService.findById(currentProject.getProjectId());
 		if (project == null) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
@@ -65,13 +65,13 @@ public class ProjectController {
 	}
 
 	@DeleteMapping(value = "/{id}", headers = "Accept=application/json")
-	public ResponseEntity<Project> deleteProject(@PathVariable("id") int id) {
-		Project project = projectService.findById(id);
+	public ResponseEntity<ProjectDto> deleteProject(@PathVariable("id") int id) {
+		ProjectDto project = projectService.findById(id);
 		if (project == null) {
-			return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ProjectDto>(HttpStatus.NOT_FOUND);
 		}
 		projectService.deleteProjectById(id);
-		return new ResponseEntity<Project>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<ProjectDto>(HttpStatus.NO_CONTENT);
 	}
 
 }

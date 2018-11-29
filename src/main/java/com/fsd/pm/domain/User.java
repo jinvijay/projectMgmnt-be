@@ -3,6 +3,7 @@ package com.fsd.pm.domain;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,12 +30,12 @@ public class User {
 	@Column(name = "emp_id")
 	private int empId;
 
-	@ManyToOne
-	@JoinColumn(name = "project_id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_project_id")
 	private Project project;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "task_id")
+	@JoinColumn(name = "user_task_id")
 	private Task task;
 
 	public int getUserId() {
@@ -69,7 +70,6 @@ public class User {
 		this.empId = empId;
 	}
 
-
 	public Project getProject() {
 		return this.project;
 	}
@@ -85,7 +85,5 @@ public class User {
 	public void setTask(Task task) {
 		this.task = task;
 	}
-	
-	
 
 }

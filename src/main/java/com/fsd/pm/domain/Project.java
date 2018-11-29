@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,8 +40,8 @@ public class Project {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Task> tasks = new HashSet<>();
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "manager_id")
 	private User manager;
 
 	public int getProjectId() {

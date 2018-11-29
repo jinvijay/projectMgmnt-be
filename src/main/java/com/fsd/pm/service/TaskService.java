@@ -2,17 +2,17 @@ package com.fsd.pm.service;
 
 import java.util.List;
 
-import com.fsd.pm.domain.Task;
+import com.fsd.pm.service.dto.TaskDto;
 
 public interface TaskService {
 
-	public Task createTask(Task Task);
+	public TaskDto createTask(TaskDto Task);
 
-	public List<Task> getTasks();
+	public List<TaskDto> getTasks();
 
-	public Task findById(int id);
+	public TaskDto findById(int id);
 
-	public Task update(Task Task, int id);
+	public TaskDto update(TaskDto Task, int id);
 
 	public void deleteTaskById(int id);
 

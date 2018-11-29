@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fsd.pm.domain.Task;
 import com.fsd.pm.service.TaskService;
+import com.fsd.pm.service.dto.TaskDto;
 
 @RestController
 @RequestMapping(value = { "/task" })
@@ -28,17 +28,17 @@ public class TaskController {
 	TaskService taskService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Task> getTaskById(@PathVariable("id") int id) {
+	public ResponseEntity<TaskDto> getTaskById(@PathVariable("id") int id) {
 		System.out.println("Fetching Task with id " + id);
-		Task task = taskService.findById(id);
+		TaskDto task = taskService.findById(id);
 		if (task == null) {
-			return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<TaskDto>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Task>(task, HttpStatus.OK);
+		return new ResponseEntity<TaskDto>(task, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/create", headers = "Accept=application/json")
-	public ResponseEntity<Void> createTask(@RequestBody Task task, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<Void> createTask(@RequestBody TaskDto task, UriComponentsBuilder ucBuilder) {
 		System.out.println("Creating Task " + task.getTask());
 		taskService.createTask(task);
 		HttpHeaders headers = new HttpHeaders();
@@ -47,16 +47,16 @@ public class TaskController {
 	}
 
 	@GetMapping(value = "/get", headers = "Accept=application/json")
-	public List<Task> getAllTask() {
-		List<Task> tasks = taskService.getTasks();
+	public List<TaskDto> getAllTask() {
+		List<TaskDto> tasks = taskService.getTasks();
 		return tasks;
 
 	}
 
 	@PutMapping(value = "/update", headers = "Accept=application/json")
-	public ResponseEntity<String> updateTask(@RequestBody Task currentTask) {
+	public ResponseEntity<String> updateTask(@RequestBody TaskDto currentTask) {
 		System.out.println("sd");
-		Task task = taskService.findById(currentTask.getTaskId());
+		TaskDto task = taskService.findById(currentTask.getTaskId());
 		if (task == null) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
@@ -65,13 +65,13 @@ public class TaskController {
 	}
 
 	@DeleteMapping(value = "/{id}", headers = "Accept=application/json")
-	public ResponseEntity<Task> deleteTask(@PathVariable("id") int id) {
-		Task task = taskService.findById(id);
+	public ResponseEntity<TaskDto> deleteTask(@PathVariable("id") int id) {
+		TaskDto task = taskService.findById(id);
 		if (task == null) {
-			return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<TaskDto>(HttpStatus.NOT_FOUND);
 		}
 		taskService.deleteTaskById(id);
-		return new ResponseEntity<Task>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<TaskDto>(HttpStatus.NO_CONTENT);
 	}
 
 }
