@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,16 +23,28 @@ public class Task {
 	@Column(name = "task_id")
 	private int taskId;
 
-	@JoinColumn(name = "parent_id")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "parent_task_id", insertable = false, updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Task parentTask;
 
 	@OneToMany(mappedBy = "parentTask")
 	private Set<Task> childTasks = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_id")
+	@JoinColumn(name = "parent_project_id")
 	private Project project;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "assoc_user_id")
+	private User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@Column(name = "task")
 	private String task;
@@ -112,6 +123,14 @@ public class Task {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Set<Task> getChildTasks() {
+		return childTasks;
+	}
+
+	public void setChildTasks(Set<Task> childTasks) {
+		this.childTasks = childTasks;
 	}
 
 }

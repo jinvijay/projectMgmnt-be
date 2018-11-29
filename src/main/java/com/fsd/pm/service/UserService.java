@@ -2,17 +2,17 @@ package com.fsd.pm.service;
 
 import java.util.List;
 
-import com.fsd.pm.domain.User;
+import com.fsd.pm.service.dto.UserDto;
 
 public interface UserService {
 
-	public User createUser(User user);
+	public UserDto createUser(UserDto user);
 
-	public List<User> getUsers();
+	public List<UserDto> getUsers();
 
-	public User findById(int id);
+	public UserDto findById(int id);
 
-	public User update(User user, int id);
+	public UserDto update(UserDto user, int id);
 
 	public void deleteUserById(int id);
 

@@ -1,6 +1,10 @@
 package com.fsd.pm.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +14,19 @@ import com.fsd.pm.domain.Project;
 import com.fsd.pm.domain.User;
 import com.fsd.pm.repo.ProjectRepository;
 import com.fsd.pm.repo.UserRepository;
+import com.fsd.pm.service.dto.ProjectDto;
+import com.fsd.pm.service.transform.ProjectDtoTransform;
+import com.fsd.pm.service.transform.ProjectTransform;
 
 @Service
 @Transactional
 public class ProjectServiceImpl implements ProjectService {
+
+	@Autowired
+	private ProjectDtoTransform projectDtoTransform;
+
+	@Autowired
+	private ProjectTransform projectTransform;
 
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -22,60 +35,65 @@ public class ProjectServiceImpl implements ProjectService {
 	private UserRepository userRepository;
 
 	@Override
-	public Project createProject(Project project) {
+	public ProjectDto createProject(ProjectDto project) {
 
 		User manager = null;
 		if (project.getManager() != null) {
 			manager = userRepository.findById(project.getManager().getEmpId()).orElse(null);
 		}
 
-		Project newProject = new Project();
-		newProject.setEndDate(project.getEndDate());
-		newProject.setPriority(project.getPriority());
-		newProject.setProject(project.getProject());
-		newProject.setStartDate(project.getStartDate());
-		Project savedProject = projectRepository.save(project);
-
+		Project savedProject = projectRepository.save(projectDtoTransform.apply(project));
 		// Save the manager to the created project
 		savedProject.setManager(manager);
-		return projectRepository.save(project);
+
+		savedProject = projectRepository.save(savedProject);
+		return projectTransform.apply(savedProject);
 
 	}
 
 	@Override
-	public List<Project> getProjects() {
-		return (List<Project>) projectRepository.findAll();
+	public List<ProjectDto> getProjects() {
+		return StreamSupport.stream(projectRepository.findAll().spliterator(), false).map(projectTransform)
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Project findById(int id) {
-		return projectRepository.findById(id).orElse(null);
+	public ProjectDto findById(int id) {
+		Project foundProject = projectRepository.findById(id).orElse(null);
+		ProjectDto result = null;
+		if (foundProject != null) {
+			result = projectTransform.apply(foundProject);
+		}
+		return result;
 	}
 
 	@Override
-	public Project update(Project project, int id) {
+	public ProjectDto update(ProjectDto project, int id) {
 
 		User manager = null;
 		if (project.getManager() != null) {
 			manager = userRepository.findById(project.getManager().getEmpId()).orElse(null);
 		}
 
-		Project projectRecord = findById(id);
+		Project projectRecord = projectRepository.findById(id).orElse(null);
+		if (projectRecord == null) {
+			throw new ValidationException("Unable to find project with id " + id);
+		}
 		projectRecord.setEndDate(project.getEndDate());
 		projectRecord.setPriority(project.getPriority());
 		projectRecord.setProject(project.getProject());
 		projectRecord.setStartDate(project.getStartDate());
+		// Save the manager to the updated project
+		projectRecord.setManager(manager);
+
 		Project updatedProject = projectRepository.save(projectRecord);
 
-		// Save the manager to the updated project
-		updatedProject.setManager(manager);
-		return projectRepository.save(updatedProject);
+		return projectTransform.apply(updatedProject);
 	}
 
 	@Override
 	public void deleteProjectById(int id) {
 		projectRepository.deleteById(id);
-
 	}
 
 }
