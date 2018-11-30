@@ -30,7 +30,7 @@ public class ProjectTransform implements Function<Project, ProjectDto> {
 		if (t.getManager() != null) {
 			newProject.setManager(userTransform.apply(t.getManager()));
 		}
-
+		
 		return newProject;
 	}
 
