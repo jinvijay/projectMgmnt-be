@@ -23,9 +23,9 @@ import com.fsd.pm.service.UserService;
 import com.fsd.pm.service.dto.UserDto;
 
 @RestController
-@RequestMapping(value={"/user"})
+@RequestMapping(value = { "/user" })
 public class UsersController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 
 	@Autowired
