@@ -39,7 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 		User manager = null;
 		if (project.getManager() != null) {
-			manager = userRepository.findById(project.getManager().getEmpId()).orElse(null);
+			manager = userRepository.findById(project.getManager().getUserId()).orElse(null);
 		}
 
 		Project savedProject = projectRepository.save(projectDtoTransform.apply(project));
