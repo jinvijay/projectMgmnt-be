@@ -15,5 +15,7 @@ public interface TaskService {
 	public TaskDto update(TaskDto Task, int id);
 
 	public void deleteTaskById(int id);
+	
+	public List<TaskDto> getParentTasks();
 
 }

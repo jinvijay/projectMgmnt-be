@@ -56,6 +56,13 @@ public class TaskController {
 		return tasks;
 
 	}
+	
+	@GetMapping(value = "/get/parent", headers = "Accept=application/json")
+	public List<TaskDto> getAllParentTask() {
+		List<TaskDto> tasks = taskService.getParentTasks();
+		return tasks;
+
+	}
 
 	@PutMapping(value = "/update", headers = "Accept=application/json")
 	public ResponseEntity<String> updateTask(@RequestBody TaskDto currentTask) {

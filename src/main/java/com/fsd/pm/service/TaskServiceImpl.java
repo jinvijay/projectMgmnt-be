@@ -62,6 +62,12 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
+	public List<TaskDto> getParentTasks() {
+		return StreamSupport.stream(taskRepository.findAll().spliterator(), false).map(taskTransform)
+				.filter(taskDto -> taskDto.getParentTask() == null).collect(Collectors.toList());
+	}
+
+	@Override
 	public TaskDto findById(int id) {
 		return taskTransform.apply(taskRepository.findById(id).orElse(null));
 	}
