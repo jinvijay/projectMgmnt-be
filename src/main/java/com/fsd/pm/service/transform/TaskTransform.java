@@ -25,6 +25,7 @@ public class TaskTransform implements Function<Task, TaskDto> {
 		}
 
 		TaskDto newTask = new TaskDto();
+		newTask.setTaskId(t.getTaskId());
 		newTask.setTask(t.getTask());
 		newTask.setPriority(t.getPriority());
 		newTask.setStartDate(t.getStartDate());
