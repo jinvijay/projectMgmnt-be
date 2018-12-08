@@ -4,6 +4,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.fsd.pm.domain.Project;
+import com.fsd.pm.domain.Task;
 import com.fsd.pm.domain.User;
 import com.fsd.pm.service.dto.ProjectDto;
 import com.fsd.pm.service.dto.UserDto;
@@ -42,7 +44,10 @@ public class ProjectTransformTest {
 		project.setProject("ProjectName");
 		project.setProjectId(11);
 		project.setStartDate(nowDate);
-		project.setTasks(new HashSet<>());
+		
+		Task task = new Task();
+		task.setTaskId(1);
+		project.setTasks(new HashSet<>(Arrays.asList(task)));
 
 		// Mock
 		UserDto mockUserDto = Mockito.mock(UserDto.class);
