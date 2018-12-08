@@ -1,5 +1,7 @@
 package com.fsd.pm.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -41,6 +43,16 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public TaskDto createTask(TaskDto task) {
+		
+		if(task.getStartDate() == null) {
+			task.setStartDate(new Date());
+		}
+		if(task.getEndDate() == null) {
+			Calendar cal = Calendar.getInstance();
+	        cal.setTime(task.getStartDate());
+	        cal.add(Calendar.DATE, 1); 
+	        task.setEndDate(cal.getTime());
+		}
 
 		Project foundProject = projectRepository.findById(task.getProject().getProjectId()).orElse(null);
 		User foundUser = userRepository.findById(task.getUser().getUserId()).orElse(null);

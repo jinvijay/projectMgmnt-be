@@ -32,6 +32,15 @@ public class ProjectControllerTest {
 		MockitoAnnotations.initMocks(this);
 	}
 
+	public ProjectControllerTest() {
+
+	}
+
+	public ProjectControllerTest(String str) {
+		this();
+
+	}
+
 	@Test
 	public void testGetProjectById() {
 
@@ -39,7 +48,7 @@ public class ProjectControllerTest {
 		when(projectService.findById(1)).thenReturn(mockProjectDto);
 		ResponseEntity<ProjectDto> response = testObj.getProjectById(1);
 		assertThat(response, IsNull.notNullValue());
-		
+
 		when(projectService.findById(1)).thenReturn(null);
 		response = testObj.getProjectById(1);
 		assertThat(response, IsNull.notNullValue());
@@ -78,7 +87,7 @@ public class ProjectControllerTest {
 		ProjectDto projectDto = new ProjectDto();
 		when(projectService.findById(1)).thenReturn(projectDto);
 		ResponseEntity<ProjectDto> response = testObj.deleteProject(1);
-		
+
 		assertThat(response, IsNull.notNullValue());
 	}
 

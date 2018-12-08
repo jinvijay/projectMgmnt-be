@@ -44,9 +44,9 @@ public class ProjectController {
 	@PostMapping(value = "/create", headers = "Accept=application/json")
 	public ResponseEntity<Void> createProject(@RequestBody ProjectDto project, UriComponentsBuilder ucBuilder) {
 		LOGGER.info("Creating Project " + project.getProject());
-		projectService.createProject(project);
+		ProjectDto newProject = projectService.createProject(project);
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/project/{id}").buildAndExpand(project.getProjectId()).toUri());
+		headers.setLocation(ucBuilder.path("/project/{id}").buildAndExpand(newProject.getProjectId()).toUri());
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	}
 

@@ -5,6 +5,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,6 +148,24 @@ public class TaskServiceImplTest {
 	@Test
 	public void testDeleteTaskById() {
 		testObj.deleteTaskById(1);
+	}
+
+	@Test
+	public void testGetParentTasks() {
+		Task task = new Task();
+		task.setTaskId(1);
+		
+		TaskDto mockTaskDto = Mockito.mock(TaskDto.class);
+		when(taskRepository.findAll()).thenReturn(Arrays.asList(task));
+		when(taskTransform.apply(any(Task.class))).thenReturn(mockTaskDto);
+		
+		List<TaskDto> result = testObj.getParentTasks();
+		assertThat(result, IsNull.notNullValue());
+		
+		Task parentTask = new Task();
+		task.setParentTask(parentTask);
+		result = testObj.getParentTasks();
+		assertThat(result, IsNull.notNullValue());
 	}
 
 }

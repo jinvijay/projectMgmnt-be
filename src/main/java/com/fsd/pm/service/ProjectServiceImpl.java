@@ -1,5 +1,7 @@
 package com.fsd.pm.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,6 +42,16 @@ public class ProjectServiceImpl implements ProjectService {
 		User manager = null;
 		if (project.getManager() != null) {
 			manager = userRepository.findById(project.getManager().getUserId()).orElse(null);
+		}
+		
+		if(project.getStartDate() == null) {
+			project.setStartDate(new Date());
+		}
+		if(project.getEndDate() == null) {
+			Calendar cal = Calendar.getInstance();
+	        cal.setTime(project.getStartDate());
+	        cal.add(Calendar.DATE, 1); 
+			project.setEndDate(cal.getTime());
 		}
 
 		Project savedProject = projectRepository.save(projectDtoTransform.apply(project));
