@@ -1,6 +1,8 @@
 package com.fsd.pm.service.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ProjectDto {
 
@@ -15,6 +17,8 @@ public class ProjectDto {
 	private int priority;
 
 	private UserDto manager;
+	
+	private List<TaskDto> tasks = new ArrayList<>();
 
 	public int getProjectId() {
 		return projectId;
@@ -63,5 +67,15 @@ public class ProjectDto {
 	public void setManager(UserDto manager) {
 		this.manager = manager;
 	}
+
+	public List<TaskDto> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<TaskDto> tasks) {
+		this.tasks = tasks;
+	}
+	
+	
 
 }
