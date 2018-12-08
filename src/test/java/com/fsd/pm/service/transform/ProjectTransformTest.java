@@ -72,5 +72,35 @@ public class ProjectTransformTest {
 	public void test_whenNull() {
 		assertThat(testObj.apply(null), IsEqual.equalTo(null));
 	}
+	
+	@Test
+	public void test_taskNull() {
+		Project project = new Project();
+		Date nowDate = new Date();
+		project.setEndDate(nowDate);
+		project.setPriority(1);
+		project.setProject("ProjectName");
+		project.setProjectId(11);
+		project.setStartDate(nowDate);
+		project.setTasks(null);
+
+		// Mock
+		UserDto mockUserDto = Mockito.mock(UserDto.class);
+		when(userTransform.apply(any(User.class))).thenReturn(mockUserDto);
+
+		ProjectDto projectDto = testObj.apply(project);
+		assertThat(projectDto.getEndDate(), IsEqual.equalTo(nowDate));
+		assertThat(projectDto.getManager(), IsEqual.equalTo(null));
+		assertThat(projectDto.getProjectId(), IsEqual.equalTo(11));
+		assertThat(projectDto.getProject(), IsEqual.equalTo("ProjectName"));
+		assertThat(projectDto.getStartDate(), IsEqual.equalTo(nowDate));
+		assertThat(projectDto.getPriority(), IsEqual.equalTo(1));
+
+		project.setManager(new User());
+		projectDto = testObj.apply(project);
+		assertThat(projectDto.getEndDate(), IsEqual.equalTo(nowDate));
+		assertThat(projectDto.getManager(), IsEqual.equalTo(mockUserDto));
+
+	}
 
 }
