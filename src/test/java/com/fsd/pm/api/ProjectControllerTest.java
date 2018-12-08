@@ -1,6 +1,7 @@
 package com.fsd.pm.api;
 
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,9 +14,12 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.Any;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fsd.pm.domain.Project;
+import com.fsd.pm.domain.Task;
 import com.fsd.pm.service.ProjectService;
 import com.fsd.pm.service.dto.ProjectDto;
 
@@ -30,15 +34,6 @@ public class ProjectControllerTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-	}
-
-	public ProjectControllerTest() {
-
-	}
-
-	public ProjectControllerTest(String str) {
-		this();
-
 	}
 
 	@Test
@@ -57,7 +52,10 @@ public class ProjectControllerTest {
 	@Test
 	public void testCreateProject() {
 		ProjectDto projectDto = new ProjectDto();
+		projectDto.setProjectId(1);
 		UriComponentsBuilder ucBuilder = UriComponentsBuilder.newInstance();
+		
+		when(projectService.createProject(any(ProjectDto.class))).thenReturn(projectDto);
 
 		ResponseEntity<Void> response = testObj.createProject(projectDto, ucBuilder);
 		assertThat(response, IsNull.notNullValue());

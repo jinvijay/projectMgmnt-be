@@ -45,14 +45,6 @@ public class ProjectServiceImplTest {
 	@InjectMocks
 	private ProjectServiceImpl testObj;
 
-	public ProjectServiceImplTest() {
-
-	}
-
-	public ProjectServiceImplTest(String test) {
-		this();
-	}
-
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
